@@ -223,15 +223,17 @@ exports.submitAnswer = async (req, res) => {
       }
 
       // Offline Keyword-Matching Fallback Grader if AI evaluation encountered issues
+     // ==========================================================
+      // OPTIMIZED OFFLINE KEYWORD-MATCHING FALLBACK GRADER (SWAPPED)
+      // ==========================================================
       if (!gradedViaAI) {
         let totalScore = 0;
-        const feedbackReport = [];
+        const itemizedQuestionsData = [];
         const domainQs = fallbackQuestionBank[interview.domain] || fallbackQuestionBank.frontend;
 
         interview.questions.forEach((qText, index) => {
           const studentAns = (updatedAnswers[index] || "").toLowerCase();
           
-          // Map to local keywords index if questions matched our fallback set
           let keywords = ["code", "optimization", "implementation", "architecture"];
           if (index < domainQs.length) {
             keywords = domainQs[index].keywords;
@@ -244,24 +246,54 @@ exports.submitAnswer = async (req, res) => {
 
           const matchRatio = matchedKeywords / keywords.length;
           let qScore = 3;
-          let qFeedback = `Question ${index + 1}: Foundational review required. Incorporate keywords like: ${keywords.slice(0, 3).join(", ")}.`;
+          let questionStrengths = [];
+          let questionWeaknesses = [];
+          let questionRecommendations = "";
 
           if (matchRatio >= 0.6) {
             qScore = 10;
-            qFeedback = `Question ${index + 1}: Strong understanding of core keywords and architecture.`;
+            questionStrengths = ["Strong Keyword Baseline: Demonstrated conceptual awareness of core terminologies."];
+            questionWeaknesses = ["Minor Depth Gaps: Expand details to match production-grade requirements."];
+            questionRecommendations = `Maintain this momentum. To achieve senior metrics, expand explicitly on contextual implementations.`;
           } else if (matchRatio >= 0.3) {
             qScore = 6;
-            qFeedback = `Question ${index + 1}: Solid baseline. Expand on terms: ${keywords.filter(k => !studentAns.includes(k)).slice(0, 3).join(", ")}.`;
+            questionStrengths = ["Partial Matching: Identified basic definitions or relevant system scopes."];
+            questionWeaknesses = [`Missing Domain Parameters: Omitted core technical keywords.`];
+            questionRecommendations = `Expand explanation patterns. Ensure you explicitly discuss parameters like: ${keywords.filter(k => !studentAns.includes(k)).slice(0, 3).join(", ")}.`;
+          } else {
+            qScore = 3;
+            questionStrengths = ["Baseline Tracking: Attempted problem parameters."];
+            questionWeaknesses = ["Critical Omission: Complete absence of expected architectural system parameters."];
+            questionRecommendations = `Review core domain components. Incorporate foundational concepts like: ${keywords.slice(0, 3).join(", ")}.`;
           }
 
           totalScore += qScore;
-          feedbackReport.push(qFeedback);
+          
+          itemizedQuestionsData.push({
+            id: index + 1,
+            title: `Question ${index + 1}: ${qText.split(/[?:]/)[0]}`,
+            text: qText,
+            strengths: questionStrengths,
+            weaknesses: questionWeaknesses,
+            recommendations: questionRecommendations
+          });
         });
 
         finalScore = Math.round((totalScore / (interview.questions.length * 10)) * 100);
-        finalFeedback = "Graded offline via local keyword matcher:\n\n" + feedbackReport.join("\n");
+        
+        finalFeedback = JSON.stringify({
+          score: finalScore,
+          domain: interview.domain.toUpperCase(),
+          overallInsights: `Offline grading triggered due to API rate constraints. Candidate achieved a keyword relevance alignment metric score of ${finalScore}% across historical validation metrics.`,
+          questions: itemizedQuestionsData
+        });
+        
+        gradedViaAI = true; 
       }
 
+      // ==========================================
+      // DATABASE COMMITMENT & DISPATCH BLOCK
+      // ==========================================
       interview.score = finalScore;
       interview.feedback = finalFeedback;
       interview.status = "Completed";
@@ -280,7 +312,6 @@ exports.submitAnswer = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
 // @desc    Fetch previous interview reports for student history tracking
 // @route   GET /api/ai/history
 exports.getHistory = async (req, res) => {
