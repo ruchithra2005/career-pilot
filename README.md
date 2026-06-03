@@ -1,16 +1,39 @@
-# 🚀 Career Pilot
+# ✈️ Career Pilot
 
-**Career Pilot** is a comprehensive, production-ready MERN (MongoDB, Express.js, React, Node.js) web application designed to bridge the gap between job preparation and market readiness.
+Career Pilot is a premium, high-definition AI-powered mock interview and campus placement portal designed to help engineering candidates bridge the gap between preparation and recruitment. Featuring role-based dashboards, interactive assessment simulators, and real-time telemetry analytics.
 
-### 🌟 Key Features
-* **Live Gemini AI Mock Interviews:** Integrates the Google Gemini API to dynamically generate context-aware interview questions based on the user's targeted career path.
-* **Advanced AI Evaluation:** Utilizes Generative AI to analyze user answers in real-time, providing constructive behavioral feedback, technical score breakdowns, and sample answers.
-* **Hybrid Validation Architecture:** Features an offline algorithmic fallback mechanism using customized keyword matching to ensure system resilience and high availability.
-* **Secure Architecture:** Implemented complete source-control isolation using environment variables (`.env`) to secure MongoDB connection strings, JWT signing keys, and developer API credentials.
+---
 
-### 🛠️ Tech Stack
-* **Frontend:** React.js, Axios, Tailwind CSS / Modern Semantic UI
-* **Backend:** Node.js, Express.js
-* **Database:** MongoDB Atlas (Mongoose ODM)
-* **AI Engine:** Google Gemini API (Generative Language Models)
-* **Security:** JSON Web Tokens (JWT), Bcrypt password hashing, Git source-control guarding
+## 🚀 Key Engineering Enhancements
+
+### 🤖 Hybrid AI Evaluation Engine & Fault-Tolerant Fallback
+* **Google Gemini AI Telemetry:** Deep integration with the Google Gemini API to analyze candidate technical responses dynamically.
+* **Resilient Offline Fallback Grader:** Built-in fault-tolerant layer that seamlessly catches API rate caps (`HTTP 429 Resource Exhausted`) without interrupting the application flow.
+* **Keyword Matching & Heuristics:** Falls back to an optimized, local token-matching algorithm that calculates semantic keyword ratios, logs actionable recommendations, and ensures candidates always receive structural scores.
+
+### 👥 Advanced Role-Based Workspaces
+* **Student/Candidate Arena:** Features an interactive interview simulator equipped with dynamic progress bars, structured text fields, and detailed breakdown analytics cards.
+* **Recruiter Control Hub:** A separate corporate interface allowing recruiters to seamlessly post active job openings and track applicant screening pipelines.
+* **Institution Administrator Panel:** Dedicated space for campus placement coordinators to track platform statistics and evaluate institutional outcomes.
+
+### 🎨 Premium UI/UX Architecture
+* **SaaS Design Philosophy:** Built entirely with a crisp, modern slate/indigo color system (`#0f172a`), refined elevations, and consistent padding metrics.
+* **Strict Layout Boundaries:** Hardened text-wrapping rules (`word-break: break-word`) applied across all scorecards to perfectly contain long-form AI insights and text blocks across variable viewports.
+
+---
+
+## 🛠️ Tech Stack & Architecture
+
+* **Frontend:** React.js, React Router DOM (Dynamic History State Mapping)
+* **Backend:** Node.js, Express.js (RESTful Core Router)
+* **Database:** MongoDB (Telemetry History Ledger & User Indexes)
+* **AI Processing:** Google Gemini API (`gemini-2.5-flash`)
+
+---
+
+## 🏃‍♂️ Getting Started Locally
+
+### 1. Clone the repository
+```bash
+git clone [https://github.com/ruchithra2005/career-pilot.git](https://github.com/ruchithra2005/career-pilot.git)
+cd career-pilot

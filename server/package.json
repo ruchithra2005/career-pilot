@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node --dns-result-order=ipv4_first ./node_modules/nodemon/bin/nodemon.js ./server.js"
+    "dev": "node --dns-result-order=ipv4first ./node_modules/nodemon/bin/nodemon.js ./server.js"
   },
   "keywords": [],
   "author": "",
